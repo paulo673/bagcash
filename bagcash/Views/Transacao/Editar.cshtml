@@ -1,0 +1,65 @@
+﻿@model bagcash.Models.Transacao
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h4>Transacao</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <input type="hidden" asp-for="Id" class="form-control" />
+
+            <div class="form-group">
+                <label asp-for="Tipo" class="control-label"></label>
+                <select asp-for="Tipo" asp-items="Html.GetEnumSelectList<Tipo>()" class="form-control">
+                    <option value="">...</option>
+                </select>
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataDeCadastro" class="control-label"></label>
+                <input type="date" asp-for="DataDeCadastro" class="form-control" />
+                <span asp-validation-for="DataDeCadastro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataDeEfetivacao" class="control-label"></label>
+                <input type="date" asp-for="DataDeEfetivacao" class="form-control" />
+                <span asp-validation-for="DataDeEfetivacao" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Efetivada" /> @Html.DisplayNameFor(model => model.Efetivada)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Categoria" class="control-label"></label>
+                <select asp-for="Categoria.Nome" class="form-control">
+                    <option value="">...</option>
+                </select>
+                <span asp-validation-for="CategoriaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+</div>
+

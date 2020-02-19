@@ -1,0 +1,116 @@
+﻿@model bagcash.Models.Transacao
+
+@{
+    ViewData["Title"] = "Detalhes";
+}
+
+
+<div>
+    <h4>Detalhes</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataDeCadastro)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DataDeCadastro.ToString("dd-MMM-yy")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataDeEfetivacao)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DataDeEfetivacao.ToString("dd-MMM-yy")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Efetivada)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Efetivada)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Categoria)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Categoria.Nome)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-primary">Voltar</a>
+    @if (!Model.Efetivada)
+    {
+        <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#efetivar">Efetivar</button>
+    }
+    <a asp-action="Editar" asp-route-transacaoId="@Model.Id" class="btn btn-outline-secondary">Editar</a>
+    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#excluir">Excluir</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="efetivar" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Efetivar transação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Efetivar">
+                    <p>Deseja efetivar esta @Model.Tipo?</p>
+
+                    <input type="hidden" name="transacaoId" value="@Model.Id" />
+
+                    <button class="btn btn-primary">Confirmar</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="excluir" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Excluir transação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Excluir">
+                    <p>Deseja excluir esta @Model.Tipo?</p>
+
+                    <input type="hidden" name="transacaoId" value="@Model.Id" />
+
+                    <button class="btn btn-primary">Confirmar</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

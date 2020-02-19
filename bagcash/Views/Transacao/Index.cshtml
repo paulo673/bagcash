@@ -1,0 +1,54 @@
+﻿@model List<bagcash.Models.Transacao>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Transações</h1>
+<a asp-action="Cadastrar" class="btn btn-primary">Cadastrar</a>
+<hr />
+
+@if (Model.Any())
+{
+    <table class="table table-hover table-click">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor (R$)</th>
+                <th scope="col">Data de cadastro</th>
+                <th scope="col">Data de efetivação</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Efetivada</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var cont = 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Detalhes" asp-route-transacaoId="@item.Id">
+                            @cont
+                        </a>
+                    </td>
+                    <td>@item.Tipo</td>
+                    <td>@item.Descricao</td>
+                    <td>@item.Valor</td>
+                    <td>@item.DataDeCadastro.ToString("dd-MMM-yy")</td>
+                    <td>@item.DataDeEfetivacao.ToString("dd-MMM-yy")</td>
+                    <td>@item.Categoria.Nome</td>
+                    <td>@(item.Efetivada ? "SIM" : "NÃO")</td>
+                </tr>
+
+                cont++;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>Não há transações cadastradas!</h4>
+}

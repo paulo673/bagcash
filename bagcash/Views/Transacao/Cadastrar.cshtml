@@ -1,0 +1,81 @@
+﻿@model bagcash.Models.ViewModels.TransacaoViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar";
+}
+
+<h4>Cadastrar transação</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Cadastrar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Tipo" class="control-label"></label>
+                <select asp-for="Tipo" asp-items="Html.GetEnumSelectList<Tipo>()" class="form-control">
+                    <option value="">...</option>
+                </select>
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input type="text" asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input type="number" asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataDeCadastro" class="control-label"></label>
+                <input type="date" asp-for="DataDeCadastro" class="form-control" />
+                <span asp-validation-for="DataDeCadastro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataDeEfetivacao" class="control-label"></label>
+                <input type="date" asp-for="DataDeEfetivacao" class="form-control" />
+                <span asp-validation-for="DataDeEfetivacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Categoria" class="control-label"></label>
+                <select asp-for="Categoria" class="form-control">
+                    <option value="">...</option>
+                </select>
+                <span asp-validation-for="Categoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Início</a>
+</div>
+
+@section scripts{ 
+
+    <script>
+        $('#Tipo').change(function () {
+            const tipo = $(this).val();
+
+            const data = {
+                tipo: tipo
+            }
+
+            let option = '';
+            $.get('/Categoria/ObterCategoriasPorTipo', data).done(function (response) {
+
+                $(response).each(function (index, item) {
+                    option = `<option value="${item.id}">${item.nome}</option>`
+
+                    $('#Categoria').append(option);
+                });
+            });
+        })
+    </script>
+    
+}
