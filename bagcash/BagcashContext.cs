@@ -19,6 +19,8 @@ namespace bagcash
 
         public DbSet<Transacao> Transacoes { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Cartao> Cartoes { get; set; }
+        public DbSet<Fatura> Faturas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +37,12 @@ namespace bagcash
             modelBuilder.Entity<Categoria>()
               .Property(x => x.Tipo)
               .HasConversion(x => x.ToString(), x => (Tipo)Enum.Parse(typeof(Tipo), x));
+
+            modelBuilder.Entity<Parcela>()
+                .ToTable("Parcelas");
+
+            modelBuilder.Entity<Fatura>()
+              .ToTable("Faturas");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,0 +1,65 @@
+﻿@model List<bagcash.Models.Transacao>
+@{
+    ViewData["Title"] = "PlanejamentoAnual";
+}
+
+<h4>PlanejamentoAnual</h4>
+<hr />
+
+@if (Model.Any())
+{
+    var contadorDeReceitas = 1;
+    var contadorDeDespesas = 1;
+
+    int[] meses = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+    <table class="text-center table table-hover table-click table-responsive table-bordered">
+        <thead class="">
+            <tr>
+                <th scope="col">Descrição</th>
+                <th>Tipo</th>
+                <th>Jan</th>
+                <th>Fev</th>
+                <th>Mar</th>
+                <th>Abr</th>
+                <th>Mai</th>
+                <th>Jun</th>
+                <th>Jul</th>
+                <th>Ago</th>
+                <th>Set</th>
+                <th>Out</th>
+                <th>Nov</th>
+                <th>Dez</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Descricao</td>
+                    <td>@item.Tipo</td>
+
+                    @foreach (var mes in meses)
+                    {
+                        if (item.Parcelas.Any(x => x.DataDeEfetivacao.Month == mes && x.DataDeEfetivacao.Year == DateTime.Now.Year))
+                        {
+                            <td>@item.Valor</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    }
+
+                </tr>
+
+                contadorDeReceitas++;
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <h4>Não há transações cadastradas!</h4>
+}

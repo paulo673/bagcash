@@ -1,0 +1,57 @@
+﻿@model bagcash.Models.Fatura
+@{
+    ViewData["Title"] = "FaturaAberta";
+}
+
+<h4>Fatura aberta</h4>
+<p>
+    <a asp-action="Cadastrar" asp-controller="Transacao" asp-route-faturaId="@Model.Id" class="btn btn-primary">Cadastrar transação</a>
+</p>
+<hr />
+
+@if (Model != null && Model.Transacoes != null && Model.Transacoes.Count > 0)
+{
+    <table class="table table-hover table-click">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor (R$)</th>
+                <th scope="col">Data de efetivação</th>
+                <th scope="col">Categoria</th>
+                <th>Efetivada</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var cont = 1;
+            }
+            @foreach (var item in Model.Transacoes)
+            {
+                var parcela = item.Parcelas
+                  .FirstOrDefault(x => x.DataDeEfetivacao.Month == DateTime.Now.Month && x.DataDeEfetivacao.Year == DateTime.Now.Year);
+
+                var parcelaNaoEstaEfetivada = (parcela.DataDeEfetivacao < DateTime.Now && @parcela.Efetivada == false);
+
+                <tr>
+                    <td>
+                        <a asp-action="Detalhes" asp-route-transacaoId="@item.Id">
+                            @cont
+                        </a>
+                    </td>
+                    <td>@item.Descricao</td>
+                    <td>@item.Valor</td>
+                    <td>@parcela.DataDeEfetivacao.ToString("dd-MMM-yy")</td>
+                    <td>@item.Categoria.Nome</td>
+                    <td>@(parcela.Efetivada ? "SIM" : "NÃO")</td>
+                </tr>
+
+                cont++;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h5>Não existe transações nessa fatura</h5>
+}

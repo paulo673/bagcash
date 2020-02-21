@@ -1,0 +1,31 @@
+﻿@model IEnumerable<bagcash.Models.Cartao>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Cartões</h4>
+<p>
+    <a asp-action="Cadastrar" class="btn btn-primary">Cadastrar</a>
+</p>
+<hr />
+
+<div class="row">
+    @foreach (var cartao in Model)
+    {
+        <div class="card col-md-3 m-1">
+            <div class="card-body">
+                <h5>@cartao.Nome</h5>
+                <hr />
+                <label class="control-label font-weight-bold">Limite R$ @cartao.Limite</label><br />
+                <small class="text-muted">Fechamento dia @cartao.DiaDeFechamento</small><br />
+                <small class="text-muted">Vencimento dia @cartao.DiaDeVencimento</small>
+            </div>
+            <div class="card-header">
+                <a asp-action="FaturaAberta" asp-route-cartaoId="@cartao.Id">
+                    <p>Fatura aberta</p>
+                </a>
+            </div>
+        </div>
+    }
+</div>

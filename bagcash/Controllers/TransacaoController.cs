@@ -2,6 +2,8 @@
 using bagcash.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace bagcash.Controllers
@@ -19,14 +21,22 @@ namespace bagcash.Controllers
         {
             var transacoes = await context.Transacoes
              .Include(x => x.Categoria)
+             .Include(x => x.Parcelas)
+             .Where(x => x.Parcelas
+             .Any(y => y.DataDeEfetivacao.Month == DateTime.Now.Month && y.DataDeEfetivacao.Year == DateTime.Now.Year && x.FaturaId == null))
              .AsNoTracking()
              .ToListAsync();
 
             return View(transacoes);
         }
 
-        public async Task<IActionResult> Cadastrar()
+        public IActionResult Cadastrar(int? faturaId)
         {
+            if (faturaId != null || faturaId != 0)
+            {
+                ViewBag.FaturaId = faturaId;
+            }
+
             return View();
         }
 
@@ -39,13 +49,13 @@ namespace bagcash.Controllers
                 return View(transacaoVm);
             }
 
-            var transacao = new Transacao(transacaoVm.Tipo, transacaoVm.Descricao, transacaoVm.Valor, transacaoVm.DataDeCadastro, transacaoVm.DataDeEfetivacao, transacaoVm.Categoria);
+            var transacao = new Transacao(transacaoVm.Tipo, transacaoVm.Descricao, transacaoVm.Valor, transacaoVm.DataDeCadastro, transacaoVm.Categoria, transacaoVm.NumeroDeParcelas, transacaoVm.DataDaPrimeiraParcela, transacaoVm.FaturaId);
 
             context.Add(transacao);
 
             await context.SaveChangesAsync();
 
-            TempData["sucesso"] = "Transacação cadastrada com sucesso!";
+            TempData["sucesso"] = $"{transacaoVm.Tipo} cadastrada com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -88,13 +98,22 @@ namespace bagcash.Controllers
                 .Include(x => x.Categoria)
                 .FirstOrDefaultAsync(x => x.Id.Equals(transacaoId));
 
-            transacao.Efetivar();
-
             await context.SaveChangesAsync();
 
 
             TempData["sucesso"] = "Transacação efetivada com sucesso!";
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> PlanejamentoAnual()
+        {
+            var transacoes = await context.Transacoes
+              .Include(x => x.Categoria)
+              .Include(x => x.Parcelas)
+              .AsNoTracking()
+              .ToListAsync();
+
+            return View(transacoes);
         }
     }
 }

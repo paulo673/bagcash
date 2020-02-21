@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bagcash;
 
 namespace bagcash.Migrations
 {
     [DbContext(typeof(BagcashContext))]
-    partial class BagcashContextModelSnapshot : ModelSnapshot
+    [Migration("20200221021026_cartaoEFaturaCorrecao")]
+    partial class cartaoEFaturaCorrecao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,13 +78,11 @@ namespace bagcash.Migrations
 
                     b.Property<DateTime>("DataDeVencimento");
 
-                    b.Property<bool>("Fechada");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CartaoId");
 
-                    b.ToTable("Faturas");
+                    b.ToTable("Fatura");
                 });
 
             modelBuilder.Entity("bagcash.Models.Parcela", b =>
@@ -103,7 +103,7 @@ namespace bagcash.Migrations
 
                     b.HasIndex("TransacaoId");
 
-                    b.ToTable("Parcelas");
+                    b.ToTable("Parcela");
                 });
 
             modelBuilder.Entity("bagcash.Models.Transacao", b =>

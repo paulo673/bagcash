@@ -10,6 +10,11 @@
     <div class="col-md-4">
         <form asp-action="Cadastrar">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (ViewBag.FaturaId != null)
+            {
+                <input type="hidden" asp-for="FaturaId" value="@ViewBag.FaturaId"/>
+            }
+
             <div class="form-group">
                 <label asp-for="Tipo" class="control-label"></label>
                 <select asp-for="Tipo" asp-items="Html.GetEnumSelectList<Tipo>()" class="form-control">
@@ -17,6 +22,21 @@
                 </select>
                 <span asp-validation-for="Tipo" class="text-danger"></span>
             </div>
+
+            <div class="form-group m-0">
+                <label class="control-label">Se repete?</label>
+                <div class="form-group m-0">
+                    <input id="sim" asp-for="SeRepete" type="radio" value="true" class="custom-radio" />
+                    <label for="sim" class="">Sim</label>
+                    <input id="nao" asp-for="SeRepete" type="radio" value="false" class="custom-radio" checked />
+                    <label for="nao" class="">Não</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Quantas vezes?</label>
+                <input type="number" asp-for="NumeroDeParcelas" value="1" min="1" class="form-control" />
+            </div>
+
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
                 <input type="text" asp-for="Descricao" class="form-control" />
@@ -29,13 +49,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="DataDeCadastro" class="control-label"></label>
-                <input type="date" asp-for="DataDeCadastro" class="form-control" />
+                <input type="date" asp-for="DataDeCadastro" value="" class="form-control" />
                 <span asp-validation-for="DataDeCadastro" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataDeEfetivacao" class="control-label"></label>
-                <input type="date" asp-for="DataDeEfetivacao" class="form-control" />
-                <span asp-validation-for="DataDeEfetivacao" class="text-danger"></span>
+                <label asp-for="DataDaPrimeiraParcela" class="control-label"></label>
+                <input type="date" asp-for="DataDaPrimeiraParcela" value="" class="form-control" />
+                <span asp-validation-for="DataDaPrimeiraParcela" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
@@ -56,7 +76,7 @@
     <a asp-action="Index">Início</a>
 </div>
 
-@section scripts{ 
+@section scripts{
 
     <script>
         $('#Tipo').change(function () {
@@ -77,5 +97,5 @@
             });
         })
     </script>
-    
+
 }

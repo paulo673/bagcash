@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace bagcash.Models
 {
     public class Transacao
     {
         protected Transacao() { }
-        public Transacao(Tipo tipo, string descricao, decimal valor, DateTime dataDeCadastro, DateTime dataDeEfetivacao, int categoriaId, bool efetivada = false, int id = 0)
+        public Transacao(Tipo tipo, string descricao, decimal valor, DateTime dataDeCadastro, int categoriaId, int numeroDeParcelas, DateTime dataDaPrimeiraParcela, int? faturaId, int id = 0)
         {
             Id = id;
             Tipo = tipo;
             Descricao = descricao;
             Valor = valor;
             DataDeCadastro = dataDeCadastro;
-            DataDeEfetivacao = dataDeEfetivacao;
             CategoriaId = categoriaId;
-            Efetivada = efetivada;
+            FaturaId = faturaId;
+            CriarParcelas(numeroDeParcelas, dataDaPrimeiraParcela);
         }
 
         public int Id { get; private set; }
@@ -25,14 +23,28 @@ namespace bagcash.Models
         public string Descricao { get; private set; }
         public decimal Valor { get; private set; }
         public DateTime DataDeCadastro { get; private set; }
-        public DateTime DataDeEfetivacao { get; private set; }
-        public bool Efetivada { get; private set; }
         public int CategoriaId { get; private set; }
         public Categoria Categoria { get; set; }
+        public int? FaturaId { get; set; }
+        public Fatura Fatura { get; set; }
+        public ICollection<Parcela> Parcelas { get; set; } = new List<Parcela>();
 
-        public void Efetivar()
+        private void CriarParcelas(int numeroDeParcelas, DateTime dataDaPrimeiraParcela)
         {
-            this.Efetivada = true;
+            for (int i = 1; i <= numeroDeParcelas; i++)
+            {
+                bool primeiraParcela = i == 1;
+
+                if (primeiraParcela)
+                {
+                    this.Parcelas.Add(new Parcela(i, dataDaPrimeiraParcela));
+
+                }
+                else
+                {
+                    this.Parcelas.Add(new Parcela(i, dataDaPrimeiraParcela.AddMonths(i-1)));
+                }
+            }
         }
     }
 }

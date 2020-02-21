@@ -8,6 +8,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200219030254_efetivado.cs" />
     <Compile Remove="Migrations\20200219030254_efetivado.Designer.cs" />
+    <Compile Remove="Migrations\20200220235101_subCategoria.cs" />
+    <Compile Remove="Migrations\20200220235101_subCategoria.Designer.cs" />
+    <Compile Remove="Migrations\20200221020047_cartaoEFatura.cs" />
+    <Compile Remove="Migrations\20200221020047_cartaoEFatura.Designer.cs" />
   </ItemGroup>
 
 
