@@ -12,6 +12,8 @@
     <Compile Remove="Migrations\20200220235101_subCategoria.Designer.cs" />
     <Compile Remove="Migrations\20200221020047_cartaoEFatura.cs" />
     <Compile Remove="Migrations\20200221020047_cartaoEFatura.Designer.cs" />
+    <Compile Remove="Migrations\20200224234804_usuario.cs" />
+    <Compile Remove="Migrations\20200224234804_usuario.Designer.cs" />
   </ItemGroup>
 
 

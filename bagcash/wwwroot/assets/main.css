@@ -1,0 +1,99 @@
+body,
+table,
+.table tr,
+.table-hover tbody tr:hover {
+    color       : #000000;
+    font-weight : 400;
+}
+
+/*#barra-contexto {*/
+/*    background-color : #ffffff;*/
+/*    z-index          : 9;*/
+/*    position         : fixed;*/
+/*    right            : 0;*/
+/*    top              : 65px;*/
+/*    padding          : 15px 20px;*/
+/*    border-bottom    : 1px solid #eeeeee;*/
+/*}*/
+
+#main-wrapper #barra-contexto {
+    left : 250px;
+}
+
+#main-wrapper.mini-sidebar #barra-contexto {
+    left : 70px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+.font-mono {
+    font-size   : inherit;
+    font-family : 'Roboto Mono', monospace;
+}
+
+h1, h2 {
+    font-weight : 900;
+}
+
+h3, h4, .btn {
+    font-weight : 700;
+}
+
+#busca-contexto {
+    display   : inline-block;
+    max-width : 200px;
+}
+
+#busca-contexto * {
+    margin : 0;
+}
+
+#busca-contexto input,
+#busca-contexto .input-group-text {
+    padding : 0.445rem 1rem;
+}
+
+#busca-contexto input {
+    border-color : #ffffff;
+}
+
+table tr a {
+    display : block;
+}
+
+table tr a:hover {
+    text-decoration : none;
+}
+
+.form-control,
+.custom-file-label {
+    border-color : #bbbbbb
+}
+
+.form-inline label {
+    align-items     : left;
+    justify-content : left;
+}
+
+.cell-fit-content {
+    width       : 1px;
+    white-space : nowrap;
+}
+
+.text-muted, .text-secondary {
+    color : #444444 !important;
+}
+
+small, .small {
+    font-size   : 0.8rem;
+    font-weight : 400;
+}
+
+.form-inline .selectize-input {
+    min-width     : 150px !important;
+    padding-right : 40px !important;
+}
+
+.badge {
+    text-transform : uppercase;
+    font-weight    : 600;
+}

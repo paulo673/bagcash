@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bagcash;
 
 namespace bagcash.Migrations
 {
     [DbContext(typeof(BagcashContext))]
-    partial class BagcashContextModelSnapshot : ModelSnapshot
+    [Migration("20200224161004_fixa")]
+    partial class fixa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,13 +250,7 @@ namespace bagcash.Migrations
                         .HasColumnType("varchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(200)")
-                        .HasMaxLength(200);
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Cartoes");
                 });
@@ -346,10 +342,6 @@ namespace bagcash.Migrations
                     b.Property<string>("Tipo")
                         .IsRequired();
 
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(200)")
-                        .HasMaxLength(200);
-
                     b.Property<decimal>("Valor");
 
                     b.HasKey("Id");
@@ -357,8 +349,6 @@ namespace bagcash.Migrations
                     b.HasIndex("CategoriaId");
 
                     b.HasIndex("FaturaId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Transacoes");
                 });
@@ -408,13 +398,6 @@ namespace bagcash.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("bagcash.Models.Cartao", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
-                });
-
             modelBuilder.Entity("bagcash.Models.Categoria", b =>
                 {
                     b.HasOne("bagcash.Models.Categoria", "CategoriaPai")
@@ -447,10 +430,6 @@ namespace bagcash.Migrations
                     b.HasOne("bagcash.Models.Fatura", "Fatura")
                         .WithMany("Transacoes")
                         .HasForeignKey("FaturaId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Globalization;
 
 namespace bagcash
 {
@@ -26,9 +29,21 @@ namespace bagcash
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<IdentityContext>();
             services.AddDbContext<BagcashContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BagcashContext>().AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromDays(60);
+                options.LoginPath = new PathString("/Autenticacao/Entrar");
+                options.LogoutPath = new PathString("/Autenticacao/Sair");
+                options.AccessDeniedPath = new PathString("/Autenticacao/AcessoNegado");
+                options.SlidingExpiration = true;
+            });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -57,9 +72,19 @@ namespace bagcash
                 app.UseHsts();
             }
 
+            var culturaBrasileira = new[] { new CultureInfo("pt-BR") };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("pt-BR"),
+                SupportedCultures = culturaBrasileira,
+                SupportedUICultures = culturaBrasileira
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

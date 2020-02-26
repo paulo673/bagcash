@@ -1,21 +1,21 @@
-﻿@model List<bagcash.Models.Transacao>
+﻿@model bagcash.Models.ViewModels.PlanejamentoAnualViewModel
 @{
     ViewData["Title"] = "PlanejamentoAnual";
 }
 
-<h4>PlanejamentoAnual</h4>
+<h4>Planejamento anual</h4>
 <hr />
 
-@if (Model.Any())
+@if (Model.TotalPorMesECategoria.Any())
 {
     var contador = 1;
 
     int[] meses = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
-    <table class="text-center table table-hover table-click table-responsive table-bordered">
+    <table class="text-center table table-hover table-bordered">
         <thead class="">
             <tr>
-                <th scope="col">Descrição</th>
+                <th>Categoria</th>
                 <th>Tipo</th>
                 <th>Jan</th>
                 <th>Fev</th>
@@ -32,31 +32,51 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var categoria in Model.TotalPorMesECategoria.OrderBy(x => x.Tipo))
             {
-                <tr>
-                    <td>@item.Descricao</td>
-                    <td>@item.Tipo</td>
+                <tr class="@(contador % 2 == 1? "bg-light-success" : "")">
+                    <td class="p-1">@categoria.Categoria</td>
+                    <td class="p-1">@categoria.Tipo</td>
 
                     @foreach (var mes in meses)
                     {
-                        if (item.Parcelas.Any(x => x.DataDeEfetivacao.Month == mes && x.DataDeEfetivacao.Year == DateTime.Now.Year))
-                        {
-                            <td>@item.Valor</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                    }
+                        var totalDoMes = categoria.TotalPorMes.FirstOrDefault(x => x.Key == mes);
 
+                        <td class="p-1">@(totalDoMes.Value > 0 ? $"{totalDoMes.Value}" : "0,0")</td>
+                    }
                 </tr>
 
                 contador++;
             }
+            <tr>
+                <td colspan="14"></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="font-weight-bold p-1">Total de receitas p/ mês</td>
+                @foreach (var mes in meses)
+                {
+                    <td class="p-1">@Model.TotalDeReceitasPorMes.FirstOrDefault(x => x.Key == mes).Value</td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2" class="font-weight-bold p-1">Total de despesas p/ mês</td>
+                @foreach (var mes in meses)
+                {
+                    <td class="p-1">@Model.TotalDeDespesasPorMes.FirstOrDefault(x => x.Key == mes).Value</td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2" class="font-weight-bold p-1">Saldo</td>
+                @foreach (var mes in meses)
+                {
+                    var saldo = Model.SaldoPorMes.FirstOrDefault(x => x.Key == mes).Value;
+                    <td class="p-1">
+                        <span class="@(saldo < 0 ? "badge badge-danger": "badge badge-success") text-dark">@saldo</span>
+                    </td>
+                }
+            </tr>
         </tbody>
     </table>
-
 }
 else
 {

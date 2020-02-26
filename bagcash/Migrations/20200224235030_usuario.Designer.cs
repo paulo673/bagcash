@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bagcash;
 
 namespace bagcash.Migrations
 {
     [DbContext(typeof(BagcashContext))]
-    partial class BagcashContextModelSnapshot : ModelSnapshot
+    [Migration("20200224235030_usuario")]
+    partial class usuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,13 +250,7 @@ namespace bagcash.Migrations
                         .HasColumnType("varchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(200)")
-                        .HasMaxLength(200);
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Cartoes");
                 });
@@ -406,13 +402,6 @@ namespace bagcash.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("bagcash.Models.Cartao", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("bagcash.Models.Categoria", b =>

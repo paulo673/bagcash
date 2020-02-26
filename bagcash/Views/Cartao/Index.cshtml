@@ -5,11 +5,13 @@
 }
 
 <h4>Cartões</h4>
-<p>
-    <a asp-action="Cadastrar" class="btn btn-primary">Cadastrar</a>
-</p>
-<hr />
-
+<div class="row bg-success p-2 mb-3">
+    <div class="col-md-12">
+        <a asp-action="Cadastrar" class="btn btn-sm btn-light btn-sm mr-2">
+            <i class="mr-1 fas fa-plus"></i> Cadastrar
+        </a>
+    </div>
+</div>
 <div class="row">
     @foreach (var cartao in Model)
     {

@@ -1,23 +1,35 @@
-﻿using System.Threading.Tasks;
-using bagcash.Models;
+﻿using bagcash.Models;
+using System.Threading.Tasks;
 using bagcash.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace bagcash.Controllers
 {
+    [Authorize]
     public class CartaoController : Controller
     {
         private readonly BagcashContext context;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public CartaoController(BagcashContext context)
+        public CartaoController(BagcashContext context, UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             this.context = context;
+            this.userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
         {
+            var usuario = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+
             var cartoes = await context.Cartoes
+                .Where(x => x.UsuarioId == usuario.Id)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -37,8 +49,9 @@ namespace bagcash.Controllers
                 TempData["erro"] = "Oops, algo deu errado. Tente novamente!";
                 return View(cartaoVm);
             }
+            var usuario = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
 
-            var cartao = new Cartao(cartaoVm.Nome, cartaoVm.Limite, cartaoVm.DiaDeFechamento, cartaoVm.DiaDeVencimento);
+            var cartao = new Cartao(usuario, cartaoVm.Nome, cartaoVm.Limite, cartaoVm.DiaDeFechamento, cartaoVm.DiaDeVencimento);
 
             context.Add(cartao);
 

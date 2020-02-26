@@ -30,14 +30,10 @@
                 <input type="number" asp-for="DiaDeVencimento" class="form-control" />
                 <span asp-validation-for="DiaDeVencimento" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
+            <div>
+                <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Salvar</button>
+                <a class="btn btn-outline-dark ml-2" asp-action="Index"><i class="fas fa-undo"></i> Cancelar</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

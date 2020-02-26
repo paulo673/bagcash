@@ -4,11 +4,11 @@ namespace bagcash.Models.ViewModels
 {
     public class CategoriaViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Campo {0} é obrigatório!")]
         public string Nome { get; set; }
 
         [Required]
-        public Tipo Tipo { get; set; }
+        public Tipo TipoDeCategoria { get; set; }
 
         [Display(Name = "Categoria Pai")]
         public int? CategoriaPaiId { get; set; }

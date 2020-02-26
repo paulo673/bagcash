@@ -1,13 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using bagcash.Models;
 using bagcash.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace bagcash.Controllers
 {
+    [Authorize]
     public class CategoriaController : Controller
     {
         private readonly BagcashContext context;
@@ -51,7 +52,7 @@ namespace bagcash.Controllers
                 return View(categoriaVm);
             }
 
-            var categoria = new Categoria(categoriaVm.Nome, categoriaVm.Tipo, categoriaVm.Limite, categoriaVm.CategoriaPaiId);
+            var categoria = new Categoria(categoriaVm.Nome, categoriaVm.TipoDeCategoria, categoriaVm.Limite, categoriaVm.CategoriaPaiId);
 
             context.Add(categoria);
 
@@ -62,11 +63,17 @@ namespace bagcash.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> ObterCategoriasPorTipo(string tipo)
+        public async Task<IActionResult> ObterCategoriasPorTipo(Tipo tipo)
         {
-            var categorias = await context.Categorias.Where(x => x.Tipo == Enum.Parse<Tipo>(tipo)).ToListAsync();
+            var categorias = await context.Categorias.Where(x => x.Tipo == tipo).ToListAsync();
 
-            return Json(categorias);
+            var categoriasJson = categorias.Select(categoria => new
+            {
+                id = categoria.Id,
+                nome = categoria.Nome
+            });
+
+            return Json(categoriasJson);
         }
     }
 }

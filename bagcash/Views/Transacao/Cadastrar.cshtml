@@ -4,98 +4,206 @@
     ViewData["Title"] = "Cadastrar";
 }
 
-<h4>Cadastrar transação</h4>
-<hr />
+@section styles{
+    <link href="~/lib/daterangepicker/daterangepicker.css" rel="stylesheet" />
+}
+
+<h4>Cadastrar <span class="text-lowercase">@ViewData["tipoDeTransacao"]</span></h4>
 <div class="row">
     <div class="col-md-4">
+        <hr />
         <form asp-action="Cadastrar">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input id="tipoDeTransacao" name="Tipo" type="hidden" value="@ViewData["tipoDeTransacao"]" />
+
             @if (ViewBag.FaturaId != null)
             {
-                <input type="hidden" asp-for="FaturaId" value="@ViewBag.FaturaId"/>
+                <input type="hidden" asp-for="FaturaId" value="@ViewBag.FaturaId" />
             }
-
-            <div class="form-group">
-                <label asp-for="Tipo" class="control-label"></label>
-                <select asp-for="Tipo" asp-items="Html.GetEnumSelectList<Tipo>()" class="form-control">
-                    <option value="">...</option>
-                </select>
-                <span asp-validation-for="Tipo" class="text-danger"></span>
-            </div>
-
-            <div class="form-group m-0">
-                <label class="control-label">Se repete?</label>
-                <div class="form-group m-0">
-                    <input id="sim" asp-for="SeRepete" type="radio" value="true" class="custom-radio" />
-                    <label for="sim" class="">Sim</label>
-                    <input id="nao" asp-for="SeRepete" type="radio" value="false" class="custom-radio" checked />
-                    <label for="nao" class="">Não</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Quantas vezes?</label>
-                <input type="number" asp-for="NumeroDeParcelas" value="1" min="1" class="form-control" />
-            </div>
 
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
                 <input type="text" asp-for="Descricao" class="form-control" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label class="control-label">Fixa?</label>
+                <div class="form-check">
+                    <input asp-for="Fixa" type="checkbox" value="false" class="form-check-input " />
+                    <label class="form-check-label" for="Fixa">Sim</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Parcelado?</label>
+                <div class="form-check">
+                    <input id="parcelado" type="checkbox" value="" class="form-check-input " />
+                    <label class="form-check-label" for="parcelado">Sim</label>
+                </div>
+            </div>
+            <div id="parcelas" class="form-group hide">
+                <label class="control-label">Quantas vezes?</label>
+                <input type="number" asp-for="NumeroDeParcelas" value="1" min="1" class="form-control" />
+                <span asp-validation-for="NumeroDeParcelas" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Valor" class="control-label"></label>
                 <input type="number" asp-for="Valor" class="form-control" />
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DataDeCadastro" class="control-label"></label>
-                <input type="date" asp-for="DataDeCadastro" value="" class="form-control" />
-                <span asp-validation-for="DataDeCadastro" class="text-danger"></span>
-            </div>
+
+
             <div class="form-group">
                 <label asp-for="DataDaPrimeiraParcela" class="control-label"></label>
-                <input type="date" asp-for="DataDaPrimeiraParcela" value="" class="form-control" />
+                <input type="text" asp-for="DataDaPrimeiraParcela" value="" class="form-control daterange" />
                 <span asp-validation-for="DataDaPrimeiraParcela" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
                 <select asp-for="Categoria" class="form-control">
-                    <option value="">...</option>
                 </select>
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <button id="btn-cadastrar-categoria" type="button" class="btn btn-outline-secondary">
+                    <i class="fas fa-plus-circle mr-2"></i> Cadastrar categoria
+                </button>
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Salvar</button>
+                <a class="btn btn-outline-dark ml-2" asp-action="Index"><i class="fas fa-undo"></i> Cancelar</a>
             </div>
 
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Início</a>
+<div id="cadastrar-categoria" class="modal fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cadastrar categoria</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <partial name="~/Views/Categoria/_FormCadastrarCategoria.cshtml">
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 
 @section scripts{
-
+    <script src="~/lib/moment/moment.min.js"></script>
+    <script src="~/lib/daterangepicker/daterangepicker.js"></script>
+    <script src="~/js/daterangepicker.js"></script>
     <script>
-        $('#Tipo').change(function () {
-            const tipo = $(this).val();
 
-            const data = {
-                tipo: tipo
+        $(function () {
+            obterCategoriaPorTipo($('#tipoDeTransacao').val(), 'Categoria');
+        })
+
+        function obterCategoriaPorTipo(tipo, element) {
+            $.ajax({
+                url: '/Categoria/ObterCategoriasPorTipo',
+                data: { tipo: tipo },
+                success: function (response) {
+                    console.log(response);
+                    let option = '<option></option>';
+
+                    $('#' + element).html('').append(option);
+
+                    $(response).each(function (index, item) {
+                        option = `<option value="${item.id}">${item.nome}</option>`
+
+                        $('#' + element).append(option);
+                    });
+                }
+            });
+        }
+
+        $('#btn-cadastrar-categoria').click(function () {
+
+            obterCategoriaPorTipo($('#tipoDeTransacao').val(), 'CategoriaPaiId');
+
+            $('select#TipoDeCategoria option').each(function () {
+                if ($(this).text().toLowerCase() == $('#tipoDeTransacao').val().toLowerCase()) {
+                    $(this).prop('selected', 'selected');
+                    return;
+                }
+            });
+
+            $('#group-tipoDeCategoria').addClass('hide');
+
+            if ($('#tipoDeTransacao').val() === 'Receita') {
+                $('#group-limite').addClass('hide');
             }
 
-            let option = '';
-            $.get('/Categoria/ObterCategoriasPorTipo', data).done(function (response) {
+            $('#Nome').focus();
+            limparCamposDaModal();
+            $('#cadastrar-categoria').modal('show');
+        });
 
-                $(response).each(function (index, item) {
-                    option = `<option value="${item.id}">${item.nome}</option>`
+        $("#parcelado").click(function () {
 
-                    $('#Categoria').append(option);
-                });
+            if ($(this).prop("checked")) {
+                $('#Valor').prev().text('Valor da primeira parcela');
+                $('#DataDaPrimeiraParcela').prev().text('Data da primeira parcela');
+                $('#parcelas').removeClass('hide');
+            }
+            else {
+                $('#Valor').prev().text('Valor');
+                $('#DataDaPrimeiraParcela').prev().text('Data');
+                $('#parcelas').addClass('hide');
+            }
+
+        });
+
+        $('#Fixa').click(function () {
+            if ($(this).prop("checked")) {
+                $(this).val(true);
+            }
+            else {
+                $(this).val(false);
+            }
+        });
+
+        $(document).on('submit', '#form-cadastrar-categoria', function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(document.getElementById("form-cadastrar-categoria"));
+
+            $.ajax({
+                method: 'post',
+                url: '/Categoria/Cadastrar',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function () {
+                    $('#cadastrar-categoria').modal('hide');
+                    obterCategoriaPorTipo($('#tipoDeTransacao').val(), 'Categoria');
+                    limparCamposDaModal();
+                }
             });
-        })
+        });
+
+        function limparCamposDaModal() {
+            $('#Nome').val('');
+            $('#Limite').val('');
+
+            if ($('#tipoDeTransacao').val() === 'Despesa') {
+                $('#Limite').val('');
+            }
+            else {
+                $('#Limite').val(0);
+            }
+        }
     </script>
 
 }

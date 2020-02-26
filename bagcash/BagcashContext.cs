@@ -1,4 +1,5 @@
 ﻿using bagcash.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace bagcash
 {
-    public class BagcashContext : DbContext
+    public class BagcashContext : IdentityDbContext
     {
         private readonly IConfiguration configuration;
         public BagcashContext(IConfiguration configuration)
@@ -43,6 +44,8 @@ namespace bagcash
 
             modelBuilder.Entity<Fatura>()
               .ToTable("Faturas");
+
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
