@@ -8,18 +8,18 @@
     <link href="~/lib/daterangepicker/daterangepicker.css" rel="stylesheet" />
 }
 
-<h4>Cadastrar <span class="text-lowercase">@ViewData["tipoDeTransacao"]</span></h4>
+<h4>Cadastrar <span class="text-lowercase">@Model.Tipo</span></h4>
 <div class="row">
     <div class="col-md-4">
         <hr />
         <form asp-action="Cadastrar">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input id="tipoDeTransacao" name="Tipo" type="hidden" value="@ViewData["tipoDeTransacao"]" />
+            <input id="tipoDeTransacao" name="Tipo" type="hidden" value="@Model.Tipo" />
 
             @if (ViewBag.FaturaId != null)
             {
-                <input type="hidden" asp-for="FaturaId" value="@ViewBag.FaturaId" />
+                <input type="hidden" asp-for="FaturaId" value="@Model.FaturaId" />
             }
 
             <div class="form-group">
@@ -55,7 +55,6 @@
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
 
-
             <div class="form-group">
                 <label asp-for="DataDaPrimeiraParcela" class="control-label"></label>
                 <input type="text" asp-for="DataDaPrimeiraParcela" value="" class="form-control daterange" />
@@ -90,13 +89,9 @@
             </div>
             <div class="modal-body">
 
-                <partial name="~/Views/Categoria/_FormCadastrarCategoria.cshtml">
-
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
 
 @section scripts{
@@ -114,7 +109,6 @@
                 url: '/Categoria/ObterCategoriasPorTipo',
                 data: { tipo: tipo },
                 success: function (response) {
-                    console.log(response);
                     let option = '<option></option>';
 
                     $('#' + element).html('').append(option);
@@ -130,24 +124,37 @@
 
         $('#btn-cadastrar-categoria').click(function () {
 
-            obterCategoriaPorTipo($('#tipoDeTransacao').val(), 'CategoriaPaiId');
+            $.ajax({
+                method: 'get',
+                url: '/Categoria/ExibirFormCadastrarCategoria',
+                success: function (response) {
 
-            $('select#TipoDeCategoria option').each(function () {
-                if ($(this).text().toLowerCase() == $('#tipoDeTransacao').val().toLowerCase()) {
-                    $(this).prop('selected', 'selected');
-                    return;
+                    $('.modal-body').html(response);
+
+                    obterCategoriaPorTipo($('#tipoDeTransacao').val(), 'CategoriaPaiId');
+
+                    $('select#TipoDeCategoria option').each(function () {
+                        if ($(this).text().toLowerCase() == $('#tipoDeTransacao').val().toLowerCase()) {
+                            $(this).prop('selected', 'selected');
+                            return;
+                        }
+                    });
+
+                    $(document).find('#group-tipoDeCategoria').addClass('hide');
+
+                    if ($(document).find('#tipoDeTransacao').val() === 'Receita') {
+                        $(document).find('#group-limite').addClass('hide');
+                    }
+
+                    //$('input').each(function () {
+                    //    $(this).removeAttr('autofocus');
+                    //    console.log($(this));
+                    //});
+
+                    //$(document).find('#Nome').focus();
+                    $('#cadastrar-categoria').modal('show');
                 }
-            });
-
-            $('#group-tipoDeCategoria').addClass('hide');
-
-            if ($('#tipoDeTransacao').val() === 'Receita') {
-                $('#group-limite').addClass('hide');
-            }
-
-            $('#Nome').focus();
-            limparCamposDaModal();
-            $('#cadastrar-categoria').modal('show');
+            })
         });
 
         $("#parcelado").click(function () {

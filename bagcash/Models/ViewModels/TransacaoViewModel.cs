@@ -16,7 +16,7 @@ namespace bagcash.Models.ViewModels
         [Display(Name = "Data"), Required(ErrorMessage = "Campo {0} é obrigatório!")]
         public DateTime DataDaPrimeiraParcela { get; set; }
 
-        [Required(ErrorMessage = "Campo {0} é obrigatório!")]
+        [Required(ErrorMessage = "Campo {0} é obrigatório!"), DataType(DataType.Date)]
         public int Categoria { get; set; }
 
         public bool SeRepete { get; set; }

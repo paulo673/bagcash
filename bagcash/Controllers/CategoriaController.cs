@@ -75,5 +75,10 @@ namespace bagcash.Controllers
 
             return Json(categoriasJson);
         }
+
+        public PartialViewResult ExibirFormCadastrarCategoria()
+        {
+            return PartialView("~/Views/Categoria/_FormCadastrarCategoria.cshtml");
+        }
     }
 }

@@ -44,13 +44,15 @@ namespace bagcash.Controllers
 
         public IActionResult Cadastrar(Tipo tipoDeTransacao, int? faturaId)
         {
+            var transacaoVm = new TransacaoViewModel();
             if (faturaId != null || faturaId != 0)
             {
-                ViewBag.FaturaId = faturaId;
+                transacaoVm.FaturaId = faturaId;
             }
 
-            ViewData["tipoDeTransacao"] = tipoDeTransacao;
-            return View();
+            transacaoVm.Tipo = tipoDeTransacao;
+
+            return View(transacaoVm);
         }
 
         [HttpPost]
