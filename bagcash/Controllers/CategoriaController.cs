@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using bagcash.Models;
 using bagcash.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +14,14 @@ namespace bagcash.Controllers
     public class CategoriaController : Controller
     {
         private readonly BagcashContext context;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public CategoriaController(BagcashContext context)
+        public CategoriaController(BagcashContext context, UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             this.context = context;
+            this.userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -52,7 +58,8 @@ namespace bagcash.Controllers
                 return View(categoriaVm);
             }
 
-            var categoria = new Categoria(categoriaVm.Nome, categoriaVm.TipoDeCategoria, categoriaVm.Limite, categoriaVm.CategoriaPaiId);
+            var usuario = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+            var categoria = new Categoria(usuario, categoriaVm.Nome, categoriaVm.TipoDeCategoria, categoriaVm.Limite, categoriaVm.CategoriaPaiId);
 
             context.Add(categoria);
 
