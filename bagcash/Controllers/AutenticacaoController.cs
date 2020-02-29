@@ -33,6 +33,7 @@ namespace bagcash.Controllers
 
             if (!signInResult.Succeeded)
             {
+                TempData["erro"] = "Oops, login ou senha inválidos, tente novamente!";
                 return View(loginVm);
             }
             else

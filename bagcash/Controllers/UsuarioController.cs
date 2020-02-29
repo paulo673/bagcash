@@ -24,6 +24,7 @@ namespace bagcash.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["erro"] = "Oops, algo deu errado, tente novamente!";
                 return View(usuarioVm);
             }
 
@@ -37,7 +38,7 @@ namespace bagcash.Controllers
 
             if (!identityResult.Succeeded)
             {
-                //erro
+                TempData["erro"] = "Oops, algo deu errado, tente novamente!";
                 return View(usuarioVm);
             }
 
