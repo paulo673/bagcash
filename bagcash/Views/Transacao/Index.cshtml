@@ -35,90 +35,93 @@
                 <div class="tab-pane fade in active show" id="receitas">
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Descrição</th>
-                                        <th scope="col">Valor (R$)</th>
-                                        <th scope="col">Data de efetivação</th>
-                                        <th scope="col">Categoria</th>
-                                        <th>Recebida</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.Where(x => x.Tipo == Tipo.Receita))
-                                    {
-                                        var parcela = item.Parcelas
-                                         .FirstOrDefault(x => x.DataDeEfetivacao.Month == DateTime.Now.Month && x.DataDeEfetivacao.Year == DateTime.Now.Year);
-
-                                        var parcelaNaoEstaEfetivada = (parcela.DataDeEfetivacao < DateTime.Now && @parcela.Efetivada == false);
-
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <a asp-action="Detalhes" asp-route-transacaoId="@item.Id">
-                                                    @contadorDeReceitas
-                                                </a>
-                                            </td>
-                                            <td>@item.Descricao</td>
-                                            <td>@item.Valor</td>
-                                            <td>@parcela.DataDeEfetivacao.ToString("dd-MMM-yy")</td>
-                                            <td>@item.Categoria.Nome</td>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input type="checkbox" value="" class="form-check-input " @(parcela.Efetivada ? "checked" : "checked") onclick="efetivar(this, @parcela.Id)" />
-                                                    <label class="control-label">@(parcela.Efetivada ? "Sim" : "Não")</label>
-                                                </div>
-                                            </td>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Descrição</th>
+                                            <th scope="col">Valor (R$)</th>
+                                            <th scope="col">Data de efetivação</th>
+                                            <th scope="col">Categoria</th>
+                                            <th>Recebida</th>
                                         </tr>
-
-                                        contadorDeReceitas++;
-                                    }
-                                </tbody>
-                            </table>
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Where(x => x.Tipo == Tipo.Receita))
+                                        {
+                                            var parcela = item.Parcelas
+                                             .FirstOrDefault(x => x.DataDeEfetivacao.Month == DateTime.Now.Month && x.DataDeEfetivacao.Year == DateTime.Now.Year);
+    
+                                            var parcelaNaoEstaEfetivada = (parcela.DataDeEfetivacao < DateTime.Now && @parcela.Efetivada == false);
+    
+                                            <tr>
+                                                <td>
+                                                    <a asp-action="Detalhes" asp-route-transacaoId="@item.Id">
+                                                        @contadorDeReceitas
+                                                    </a>
+                                                </td>
+                                                <td>@item.Descricao</td>
+                                                <td>@item.Valor</td>
+                                                <td>@parcela.DataDeEfetivacao.ToString("dd-MMM-yy")</td>
+                                                <td>@item.Categoria.Nome</td>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="" class="form-check-input " @(parcela.Efetivada ? "checked" : "checked") onclick="efetivar(this, @parcela.Id)" />
+                                                        <label class="control-label">@(parcela.Efetivada ? "Sim" : "Não")</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+    
+                                            contadorDeReceitas++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade in" id="despesas">
                     <div class="row">
                         <div class="col">
-                            <table class="table table-hover table-click">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Descrição</th>
-                                        <th scope="col">Valor (R$)</th>
-                                        <th scope="col">Data de efetivação</th>
-                                        <th scope="col">Categoria</th>
-                                        <th>Paga</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.Where(x => x.Tipo == Tipo.Despesa))
-                                    {
-                                        var parcela = item.Parcelas
-                                            .FirstOrDefault(x => x.DataDeEfetivacao.Month == DateTime.Now.Month && x.DataDeEfetivacao.Year == DateTime.Now.Year);
-
-                                        var parcelaNaoEstaEfetivada = (parcela.DataDeEfetivacao < DateTime.Now && @parcela.Efetivada == false);
-
-                                        <tr @*class="@(parcelaNaoEstaEfetivada ? "bg bg-warning" : "")"*@>
-                                            <td>
-                                                <a asp-action="Detalhes" asp-route-transacaoId="@item.Id">
-                                                    @contadorDeDespesas
-                                                </a>
-                                            </td>
-                                            <td>@item.Descricao</td>
-                                            <td>@item.Valor</td>
-                                            <td>@parcela.DataDeEfetivacao.ToString("dd-MMM-yy")</td>
-                                            <td>@item.Categoria.Nome</td>
-                                            <td>@(parcela.Efetivada ? "SIM" : "NÃO")</td>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-click">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Descrição</th>
+                                            <th scope="col">Valor (R$)</th>
+                                            <th scope="col">Data de efetivação</th>
+                                            <th scope="col">Categoria</th>
+                                            <th>Paga</th>
                                         </tr>
-
-                                        contadorDeDespesas++;
-                                    }
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Where(x => x.Tipo == Tipo.Despesa))
+                                        {
+                                            var parcela = item.Parcelas
+                                                .FirstOrDefault(x => x.DataDeEfetivacao.Month == DateTime.Now.Month && x.DataDeEfetivacao.Year == DateTime.Now.Year);
+    
+                                            var parcelaNaoEstaEfetivada = (parcela.DataDeEfetivacao < DateTime.Now && @parcela.Efetivada == false);
+    
+                                            <tr @*class="@(parcelaNaoEstaEfetivada ? "bg bg-warning" : "")"*@>
+                                                <td>
+                                                    <a asp-action="Detalhes" asp-route-transacaoId="@item.Id">
+                                                        @contadorDeDespesas
+                                                    </a>
+                                                </td>
+                                                <td>@item.Descricao</td>
+                                                <td>@item.Valor</td>
+                                                <td>@parcela.DataDeEfetivacao.ToString("dd-MMM-yy")</td>
+                                                <td>@item.Categoria.Nome</td>
+                                                <td>@(parcela.Efetivada ? "SIM" : "NÃO")</td>
+                                            </tr>
+    
+                                            contadorDeDespesas++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
