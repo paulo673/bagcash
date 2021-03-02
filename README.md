@@ -1,7 +1,7 @@
 <div align="center" id="top"> 
   <img src="./.github/app.gif" alt="Bagcash" />
 
-  &#xa0;
+&#xa0;
 
   <!-- <a href="https://bagcash.netlify.app">Demo</a> -->
 </div>
@@ -24,11 +24,11 @@
   <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/bagcash?color=56BEB8" /> -->
 </p>
 
-<!-- Status -->
+Status
 
-<!-- <h4 align="center"> 
-	🚧  Bagcash 🚀 Under construction...  🚧
-</h4> 
+<h4 align="center"> 
+	🚧  Bagcash 🚀 em desenvolvimento...  🚧
+</h4>
 
 <hr> -->
 
@@ -44,54 +44,52 @@
 
 <br>
 
-## :dart: About ##
+## :dart: Sobre
 
-Describe your project
+Depois de me frustar com meu gerenciador de finanças pessoais antigo, decide criar um próprio.
 
-## :sparkles: Features ##
+## :sparkles: Funcionalidades
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+:heavy_check_mark: Gerenciar despesas;\
+:heavy_check_mark: Gerenciar cartões;\
+:heavy_check_mark: Gerenciar objetivos;
 
-## :rocket: Technologies ##
+## :rocket: Tecnologias
 
-The following tools were used in this project:
+As seguintes tecnologias foram usadas:
 
-- [Expo](https://expo.io/)
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
+- [.Net core](https://expo.io/)
+- [Asp.Net MVC](https://nodejs.org/en/)
+- [Entity framework core](https://pt-br.reactjs.org/)
+- [Asp.Net Identity](https://reactnative.dev/)
 
-## :white_check_mark: Requirements ##
+## :white_check_mark: Requisitos
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+.Net core 2.2
 
-## :checkered_flag: Starting ##
+## :checkered_flag: Iniciar o projeto
 
 ```bash
-# Clone this project
+# Clone o projeto
 $ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/bagcash
 
-# Access
+# Acesse
 $ cd bagcash
 
-# Install dependencies
-$ yarn
+# Instale as dependências
+$ dotnet restore
 
-# Run the project
-$ yarn start
+# Rode o projeto
+$ dotnet run
 
-# The server will initialize in the <http://localhost:3000>
+# O servidor deverá iniciar em <http://localhost:5000>
 ```
 
-## :memo: License ##
+## :memo: Licença
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
 
-
-Made with :heart: by <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">{{YOUR_NAME}}</a>
+Made with :heart: by <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">Paulo Barbosa</a>
 
 &#xa0;
 
