@@ -38,10 +38,10 @@ Depois de me frustar com meu gerenciador de finanças pessoais antigo, decide cr
 
 As seguintes tecnologias foram usadas:
 
-- [.Net core](https://expo.io/)
-- [Asp.Net MVC](https://nodejs.org/en/)
-- [Entity framework core](https://pt-br.reactjs.org/)
-- [Asp.Net Identity](https://reactnative.dev/)
+- [.Net core](https://dotnet.microsoft.com/download/dotnet/2.1/)
+- [Asp.Net MVC](https://docs.microsoft.com/pt-br/aspnet/mvc/)
+- [Asp.Net Identity](https://docs.microsoft.com/pt-br/aspnet/core/security/authentication/identity?view=aspnetcore-5.0&tabs=visual-studio)
+- [Entity framework core](https://docs.microsoft.com/pt-br/ef/core/)
 
 ## :white_check_mark: Requisitos
 
